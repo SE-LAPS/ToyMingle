@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:shop_app/screens/products/products_screen.dart';
-
 import 'screens/cart/cart_screen.dart';
 import 'screens/complete_profile/complete_profile_screen.dart';
 import 'screens/details/details_screen.dart';
@@ -13,6 +12,10 @@ import 'screens/profile/profile_screen.dart';
 import 'screens/sign_in/sign_in_screen.dart';
 import 'screens/sign_up/sign_up_screen.dart';
 import 'screens/splash/splash_screen.dart';
+// Add new imports
+import 'screens/swap/swap_screen.dart';
+import 'screens/sell/sell_screen.dart';
+import 'screens/child_lock/child_lock_screen.dart';
 
 // We use name route
 // All our routes will be available here
@@ -30,4 +33,8 @@ final Map<String, WidgetBuilder> routes = {
   DetailsScreen.routeName: (context) => const DetailsScreen(),
   CartScreen.routeName: (context) => const CartScreen(),
   ProfileScreen.routeName: (context) => const ProfileScreen(),
+  // Add new routes
+  SwapScreen.routeName: (context) => const SwapScreen(),
+  SellScreen.routeName: (context) => const SellScreen(),
+  ChildLockScreen.routeName: (context) => const ChildLockScreen(),
 };
