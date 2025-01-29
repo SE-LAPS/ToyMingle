@@ -6,7 +6,7 @@ class ChildLockScreen extends StatefulWidget {
   const ChildLockScreen({Key? key}) : super(key: key);
 
   @override
-  _ChildLockScreenState createState() => _ChildLockScreenState();
+  State<ChildLockScreen> createState() => _ChildLockScreenState();
 }
 
 class _ChildLockScreenState extends State<ChildLockScreen> {
@@ -19,7 +19,7 @@ class _ChildLockScreenState extends State<ChildLockScreen> {
     'Remote control cars',
   ];
 
-  List<bool> selectedItems = [];
+  late List<bool> selectedItems;
 
   @override
   void initState() {
@@ -32,6 +32,7 @@ class _ChildLockScreenState extends State<ChildLockScreen> {
       selectedItems = List<bool>.filled(toyList.length, false);
     });
   }
+
   void saveSelection() {
     final selectedToys = toyList
         .asMap()
@@ -39,7 +40,13 @@ class _ChildLockScreenState extends State<ChildLockScreen> {
         .where((entry) => selectedItems[entry.key])
         .map((entry) => entry.value)
         .toList();
-    print('Saved Toys: $selectedToys');
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Saved Toys: ${selectedToys.join(', ')}'),
+        duration: const Duration(seconds: 2),
+      ),
+    );
   }
 
   @override
@@ -68,15 +75,18 @@ class _ChildLockScreenState extends State<ChildLockScreen> {
                   value: 'Enabled',
                   items: const [
                     DropdownMenuItem(value: 'Enabled', child: Text('Enabled')),
-                    DropdownMenuItem(value: 'Disabled', child: Text('Disabled')),
+                    DropdownMenuItem(
+                        value: 'Disabled', child: Text('Disabled')),
                   ],
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    // Add functionality if required
+                  },
                 ),
               ],
             ),
             const SizedBox(height: 16),
             const Text(
-              'Please select toys to hide from your childs feed',
+              'Select toys to hide from your child\'s feed:',
               style: TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 16),
@@ -102,19 +112,19 @@ class _ChildLockScreenState extends State<ChildLockScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
+                  onPressed: clearSelection,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
+                    backgroundColor: Colors.grey,
                     foregroundColor: Colors.white,
                   ),
-                  onPressed: clearSelection,
                   child: const Text('Clear'),
                 ),
                 ElevatedButton(
+                  onPressed: saveSelection,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.orange,
                     foregroundColor: Colors.white,
                   ),
-                  onPressed: saveSelection,
                   child: const Text('Save'),
                 ),
               ],
