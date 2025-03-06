@@ -15,6 +15,8 @@ import 'screens/splash/splash_screen.dart';
 import 'screens/swap/swap_screen.dart';
 import 'screens/sell/sell_screen.dart';
 import 'screens/child_lock/child_lock_screen.dart';
+import 'screens/settings/settings_screen.dart'; // Add this import
+import 'screens/help_center/help_center_screen.dart'; // Add this import
 
 final Map<String, WidgetBuilder> routes = {
   InitScreen.routeName: (context) => const InitScreen(),
@@ -33,4 +35,6 @@ final Map<String, WidgetBuilder> routes = {
   SwapScreen.routeName: (context) => SwapScreen(),
   SellScreen.routeName: (context) => const SellScreen(),
   ChildLockScreen.routeName: (context) => const ChildLockScreen(),
+  SettingsScreen.routeName: (context) => const SettingsScreen(), // Add this route
+  HelpCenterScreen.routeName: (context) => const HelpCenterScreen(), // Add this route
 };

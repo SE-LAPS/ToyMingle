@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../help_center/help_center_screen.dart';
+import '../settings/settings_screen.dart';
 import 'components/profile_menu.dart';
 import 'components/profile_pic.dart';
 
@@ -32,12 +34,16 @@ class ProfileScreen extends StatelessWidget {
             ProfileMenu(
               text: "Settings",
               icon: "assets/icons/Settings.svg",
-              press: () {},
+              press: () {
+                Navigator.pushNamed(context, SettingsScreen.routeName);
+              },
             ),
             ProfileMenu(
               text: "Help Center",
               icon: "assets/icons/Question mark.svg",
-              press: () {},
+              press: () {
+                Navigator.pushNamed(context, HelpCenterScreen.routeName);
+              },
             ),
             ProfileMenu(
               text: "Log Out",
