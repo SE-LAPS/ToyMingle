@@ -12,7 +12,7 @@ class HomeHeader extends StatelessWidget {
 
   void _showDropdownMenu(BuildContext context, RenderBox button) {
     final buttonPosition = button.localToGlobal(Offset.zero);
-    
+
     showMenu<String>(
       context: context,
       position: RelativeRect.fromLTRB(
@@ -94,7 +94,8 @@ class HomeHeader extends StatelessWidget {
             builder: (context) => IconBtnWithCounter(
               svgSrc: "assets/icons/Plus Icon.svg",
               press: () {
-                final RenderBox button = context.findRenderObject() as RenderBox;
+                final RenderBox button =
+                    context.findRenderObject() as RenderBox;
                 _showDropdownMenu(context, button);
               },
             ),

@@ -3,102 +3,119 @@ import 'package:flutter/material.dart';
 class SwapScreen extends StatefulWidget {
   static const String routeName = '/swap';
 
-  const SwapScreen({Key? key}) : super(key: key);
-
   @override
   _SwapScreenState createState() => _SwapScreenState();
 }
 
 class _SwapScreenState extends State<SwapScreen> {
-  // Controller for the text field
-  final TextEditingController _toyController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  String _toyName = '';
+  String _condition = '';
+  String _category = '';
+  String _description = '';
+  List<String> _images = [];
 
-  // List to store added toys
-  final List<String> _toys = [];
-
-  // Function to add a new toy
-  void _addToy() {
-    if (_toyController.text.isNotEmpty) {
-      setState(() {
-        _toys.add(_toyController.text);
-        _toyController.clear();
-      });
+  void _submitForm() {
+    if (_formKey.currentState!.validate()) {
+      // Process the data
+      print('Toy Name: $_toyName');
+      print('Condition: $_condition');
+      print('Category: $_category');
+      print('Description: $_description');
+      print('Images: $_images');
     }
-  }
-
-  // Function to clear all toys
-  void _clearToys() {
-    setState(() {
-      _toys.clear();
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add a Toy to Swap'),
+        title: Text('Add a Toy to Swap'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _toyController,
-              decoration: const InputDecoration(
-                labelText: 'Add a Toy',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context); // Cancel action
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey,
-                  ),
-                  child: const Text('Cancel'),
-                ),
-                ElevatedButton(
-                  onPressed: _addToy,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
-                  ),
-                  child: const Text('Post'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Expanded(
-              child: ListView.builder(
-                itemCount: _toys.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(_toys[index]),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.delete, color: Colors.red),
-                      onPressed: () {
-                        setState(() {
-                          _toys.removeAt(index);
-                        });
-                      },
-                    ),
-                  );
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            children: <Widget>[
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Toy Name *'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter the toy name';
+                  }
+                  return null;
+                },
+                onChanged: (value) {
+                  setState(() {
+                    _toyName = value;
+                  });
                 },
               ),
-            ),
-            ElevatedButton(
-              onPressed: _clearToys,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.orange,
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Condition *'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter the condition';
+                  }
+                  return null;
+                },
+                onChanged: (value) {
+                  setState(() {
+                    _condition = value;
+                  });
+                },
               ),
-              child: const Text('Clear All Toys'),
-            ),
-          ],
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Category *'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter the category';
+                  }
+                  return null;
+                },
+                onChanged: (value) {
+                  setState(() {
+                    _category = value;
+                  });
+                },
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Description'),
+                maxLines: 3,
+                onChanged: (value) {
+                  setState(() {
+                    _description = value;
+                  });
+                },
+              ),
+              SizedBox(height: 20),
+              Text('Upload Images *'),
+              ElevatedButton(
+                onPressed: () {
+                  // Implement image upload functionality
+                },
+                child: Text('Add Images'),
+              ),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  ElevatedButton(
+                    onPressed: () {
+                      // Cancel action
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Cancel'),
+                  ),
+                  ElevatedButton(
+                    onPressed: _submitForm,
+                    child: Text('Post'),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
