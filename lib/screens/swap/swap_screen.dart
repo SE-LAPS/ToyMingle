@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/screens/home/home_screen.dart';
 
 class SwapScreen extends StatefulWidget {
   static const String routeName = '/swap';
+
+  const SwapScreen({Key? key}) : super(key: key);
 
   @override
   _SwapScreenState createState() => _SwapScreenState();
@@ -9,108 +12,186 @@ class SwapScreen extends StatefulWidget {
 
 class _SwapScreenState extends State<SwapScreen> {
   final _formKey = GlobalKey<FormState>();
-  String _toyName = '';
-  String _condition = '';
-  String _category = '';
-  String _description = '';
-  List<String> _images = [];
+  final _toyNameController = TextEditingController();
+  final _descriptionController = TextEditingController();
+
+  String? _selectedCondition;
+  String? _selectedCategory;
+
+  final List<String> _conditions = [
+    'New',
+    'Used - Like New',
+    'Used - Good',
+    'Used - Fair'
+  ];
+  final List<String> _categories = [
+    'Action Figures',
+    'Board Games',
+    'Dolls',
+    'Educational Toys'
+  ];
+
+  @override
+  void dispose() {
+    _toyNameController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       // Process the data
-      print('Toy Name: $_toyName');
-      print('Condition: $_condition');
-      print('Category: $_category');
-      print('Description: $_description');
-      print('Images: $_images');
+      print('Toy Name: ${_toyNameController.text}');
+      print('Condition: $_selectedCondition');
+      print('Category: $_selectedCategory');
+      print('Description: ${_descriptionController.text}');
+
+      // Navigate back to home screen or show a success message
+      Navigator.pushNamed(context, HomeScreen.routeName);
     }
+  }
+
+  void _cancelForm() {
+    // Clear the form and navigate back
+    _toyNameController.clear();
+    _descriptionController.clear();
+    setState(() {
+      _selectedCondition = null;
+      _selectedCategory = null;
+    });
+    Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add a Toy to Swap'),
+        title: Text('Post Swap'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: ListView(
-            children: <Widget>[
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
               TextFormField(
-                decoration: InputDecoration(labelText: 'Toy Name *'),
+                controller: _toyNameController,
+                decoration: InputDecoration(labelText: 'Toy Name'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter the toy name';
+                    return 'Please enter a toy name';
                   }
                   return null;
-                },
-                onChanged: (value) {
-                  setState(() {
-                    _toyName = value;
-                  });
-                },
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Condition *'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the condition';
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  setState(() {
-                    _condition = value;
-                  });
-                },
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Category *'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the category';
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  setState(() {
-                    _category = value;
-                  });
-                },
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Description'),
-                maxLines: 3,
-                onChanged: (value) {
-                  setState(() {
-                    _description = value;
-                  });
                 },
               ),
               SizedBox(height: 20),
-              Text('Upload Images *'),
-              ElevatedButton(
-                onPressed: () {
-                  // Implement image upload functionality
+              DropdownButtonFormField<String>(
+                value: _selectedCondition,
+                decoration: InputDecoration(labelText: 'Condition'),
+                items: _conditions.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _selectedCondition = newValue;
+                  });
                 },
-                child: Text('Add Images'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please select a condition';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 20),
+              DropdownButtonFormField<String>(
+                value: _selectedCategory,
+                decoration: InputDecoration(labelText: 'Category'),
+                items: _categories.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _selectedCategory = newValue;
+                  });
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please select a category';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 20),
+              TextFormField(
+                controller: _descriptionController,
+                decoration: InputDecoration(labelText: 'Description'),
+                maxLines: 3,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a description';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 20),
+              Text('Add Specific Preferences',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              SizedBox(height: 10),
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Specific Preferences'),
+                maxLines: 2,
+              ),
+              SizedBox(height: 20),
+              Text('Upload Images',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              SizedBox(height: 10),
+              Container(
+                height: 100,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Center(
+                  child: IconButton(
+                    icon: Icon(Icons.add_a_photo, size: 40),
+                    onPressed: () {
+                      // Implement image upload functionality
+                    },
+                  ),
+                ),
               ),
               SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  ElevatedButton(
-                    onPressed: () {
-                      // Cancel action
-                      Navigator.of(context).pop();
-                    },
-                    child: Text('Cancel'),
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _cancelForm,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey[300],
+                        foregroundColor: Colors.black,
+                      ),
+                      child: Text('Cancel'),
+                    ),
                   ),
-                  ElevatedButton(
-                    onPressed: _submitForm,
-                    child: Text('Post'),
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _submitForm,
+                      child: Text('Post Swap'),
+                    ),
                   ),
                 ],
               ),
