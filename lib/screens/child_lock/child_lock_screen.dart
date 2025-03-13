@@ -6,47 +6,32 @@ class ChildLockScreen extends StatefulWidget {
   const ChildLockScreen({Key? key}) : super(key: key);
 
   @override
-  State<ChildLockScreen> createState() => _ChildLockScreenState();
+  _ChildLockScreenState createState() => _ChildLockScreenState();
 }
 
 class _ChildLockScreenState extends State<ChildLockScreen> {
-  final List<String> toyList = [
-    'Building blocks',
-    'Alphabet puzzles',
-    'Bicycles',
-    'Jump ropes',
-    'Water guns',
-    'Remote control cars',
-  ];
+  bool _isChildLockEnabled = false;
+  final Map<String, bool> _selectedToys = {
+    'Building blocks': false,
+    'Applabel puzzles': false,
+    'Bicycles': false,
+    'Jump ropes': false,
+    'Water guns': false,
+    'Remote control cars': false,
+  };
 
-  late List<bool> selectedItems;
-
-  @override
-  void initState() {
-    super.initState();
-    selectedItems = List<bool>.filled(toyList.length, false);
-  }
-
-  void clearSelection() {
+  void _clearSelections() {
     setState(() {
-      selectedItems = List<bool>.filled(toyList.length, false);
+      _selectedToys.forEach((key, value) {
+        _selectedToys[key] = false;
+      });
     });
   }
 
-  void saveSelection() {
-    final selectedToys = toyList
-        .asMap()
-        .entries
-        .where((entry) => selectedItems[entry.key])
-        .map((entry) => entry.value)
-        .toList();
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Saved Toys: ${selectedToys.join(', ')}'),
-        duration: const Duration(seconds: 2),
-      ),
-    );
+  void _saveSelections() {
+    // Handle save action
+    // You can add your logic here to save the selected toys
+    print('Selected Toys: $_selectedToys');
   }
 
   @override
@@ -56,7 +41,9 @@ class _ChildLockScreenState extends State<ChildLockScreen> {
         title: const Text('Child Lock'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
       ),
       body: Padding(
@@ -64,74 +51,74 @@ class _ChildLockScreenState extends State<ChildLockScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Text(
+              'Child Lock',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
                   'Child Lock',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 18),
                 ),
-                DropdownButton<String>(
-                  value: 'Enabled',
-                  items: const [
-                    DropdownMenuItem(value: 'Enabled', child: Text('Enabled')),
-                    DropdownMenuItem(
-                        value: 'Disabled', child: Text('Disabled')),
-                  ],
-                  onChanged: (value) {
-                    // Add functionality if required
+                const Spacer(),
+                Switch(
+                  value: _isChildLockEnabled,
+                  onChanged: (bool value) {
+                    setState(() {
+                      _isChildLockEnabled = value;
+                    });
                   },
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
             const Text(
-              'Select toys to hide from your child\'s feed:',
-              style: TextStyle(fontSize: 16),
+              'Please select toys to hide from your child\'s feed',
+              style: TextStyle(fontSize: 18),
             ),
             const SizedBox(height: 16),
             Expanded(
-              child: ListView.builder(
-                itemCount: toyList.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(toyList[index]),
-                    trailing: Checkbox(
-                      value: selectedItems[index],
-                      onChanged: (value) {
-                        setState(() {
-                          selectedItems[index] = value!;
-                        });
-                      },
-                    ),
-                  );
-                },
+              child: ListView(
+                children: _selectedToys.keys.map((String toyName) {
+                  return _buildToyCheckbox(toyName);
+                }).toList(),
               ),
             ),
+            const SizedBox(height: 16),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ElevatedButton(
-                  onPressed: clearSelection,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey,
-                    foregroundColor: Colors.white,
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: _clearSelections,
+                    child: const Text('Clear'),
                   ),
-                  child: const Text('Clear'),
                 ),
-                ElevatedButton(
-                  onPressed: saveSelection,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
-                    foregroundColor: Colors.white,
+                const SizedBox(width: 16),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: _saveSelections,
+                    child: const Text('Save'),
                   ),
-                  child: const Text('Save'),
                 ),
               ],
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildToyCheckbox(String toyName) {
+    return CheckboxListTile(
+      title: Text(toyName),
+      value: _selectedToys[toyName],
+      onChanged: (bool? value) {
+        setState(() {
+          _selectedToys[toyName] = value ?? false;
+        });
+      },
     );
   }
 }
