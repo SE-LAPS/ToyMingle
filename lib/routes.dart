@@ -17,6 +17,9 @@ import 'screens/sell/sell_screen.dart';
 import 'screens/child_lock/child_lock_screen.dart';
 import 'screens/settings/settings_screen.dart'; // Add this import
 import 'screens/help_center/help_center_screen.dart'; // Add this import
+import 'screens/flash_deal/flash_deal_screen.dart';
+import 'screens/Game_deal/game_deal_screen.dart';
+import 'screens/daily_gift_deal/daily_gift_screen.dart';
 
 final Map<String, WidgetBuilder> routes = {
   InitScreen.routeName: (context) => const InitScreen(),
@@ -37,4 +40,7 @@ final Map<String, WidgetBuilder> routes = {
   ChildLockScreen.routeName: (context) => const ChildLockScreen(),
   SettingsScreen.routeName: (context) => const SettingsScreen(), // Add this route
   HelpCenterScreen.routeName: (context) => const HelpCenterScreen(), // Add this route
+  FlashDealScreen.routeName: (context) =>  FlashDealScreen(),
+  GameDealScreen.routeName:(context) => GameDealScreen(),
+  DailyGiftScreen.routeName:(context) => DailyGiftScreen(),
 };
