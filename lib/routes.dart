@@ -12,11 +12,14 @@ import 'screens/profile/profile_screen.dart';
 import 'screens/sign_in/sign_in_screen.dart';
 import 'screens/sign_up/sign_up_screen.dart';
 import 'screens/splash/splash_screen.dart';
+import 'screens/swap/post_swap_screen.dart';
+// Import swap.dart using the 'as' keyword to create a prefix
+import 'screens/swap/swap.dart' as swap_model;
 import 'screens/swap/swap_screen.dart';
 import 'screens/sell/sell_screen.dart';
 import 'screens/child_lock/child_lock_screen.dart';
-import 'screens/settings/settings_screen.dart'; // Add this import
-import 'screens/help_center/help_center_screen.dart'; // Add this import
+import 'screens/settings/settings_screen.dart';
+import 'screens/help_center/help_center_screen.dart';
 import 'screens/flash_deal/flash_deal_screen.dart';
 import 'screens/Game_deal/game_deal_screen.dart';
 import 'screens/daily_gift_deal/daily_gift_screen.dart';
@@ -36,11 +39,12 @@ final Map<String, WidgetBuilder> routes = {
   CartScreen.routeName: (context) => const CartScreen(),
   ProfileScreen.routeName: (context) => const ProfileScreen(),
   SwapScreen.routeName: (context) => const SwapScreen(),
+  '/swap/post': (context) => const PostSwapScreen(),
   SellScreen.routeName: (context) => const SellScreen(),
   ChildLockScreen.routeName: (context) => const ChildLockScreen(),
-  SettingsScreen.routeName: (context) => const SettingsScreen(), // Add this route
-  HelpCenterScreen.routeName: (context) => const HelpCenterScreen(), // Add this route
-  FlashDealScreen.routeName: (context) =>  FlashDealScreen(),
-  GameDealScreen.routeName:(context) => GameDealScreen(),
-  DailyGiftScreen.routeName:(context) => DailyGiftScreen(),
+  SettingsScreen.routeName: (context) => const SettingsScreen(),
+  HelpCenterScreen.routeName: (context) => const HelpCenterScreen(),
+  FlashDealScreen.routeName: (context) => FlashDealScreen(),
+  GameDealScreen.routeName: (context) => GameDealScreen(),
+  DailyGiftScreen.routeName: (context) => const DailyGiftScreen(),
 };
