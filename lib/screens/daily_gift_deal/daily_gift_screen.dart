@@ -1,219 +1,208 @@
 import 'package:flutter/material.dart';
 
 class DailyGiftScreen extends StatefulWidget {
-  static const String routeName = '/daily_gift';
+  static const String routeName = '/daily-gift';
+
+  const DailyGiftScreen({Key? key}) : super(key: key);
 
   @override
   _DailyGiftScreenState createState() => _DailyGiftScreenState();
 }
 
 class _DailyGiftScreenState extends State<DailyGiftScreen> {
-  final List<Map<String, dynamic>> dailyGifts = [
+  final List<Map<String, dynamic>> _dailyGifts = [
     {
-      "name": "Chocolate Box",
-      "image": "assets/images/gift1.png",
-      "description": "Unlock a surprise gift!",
-      "points": 100,
+      'id': 1,
+      'name': 'Teddy Bear',
+      'description': 'A fluffy teddy bear for kids aged 3-8',
+      'image': 'assets/images/teddy.png',
+      'remaining': 5,
+      'claimed': false,
     },
     {
-      "name": "Gift Box",
-      "image": "assets/images/gift2.png",
-      "description": "Get 20% off on your next purchase!",
-      "points": 200,
+      'id': 2,
+      'name': 'Toy Car',
+      'description': 'A miniature racing car for kids aged 5-10',
+      'image': 'assets/images/car.png',
+      'remaining': 3,
+      'claimed': false,
     },
     {
-      "name": "Pencil Box",
-      "image": "assets/images/gift3.png",
-      "description": "Enjoy free delivery on your next order!",
-      "points": 150,
-    },
-    {
-      "name": "Teddy Bear",
-      "image": "assets/images/gift4.png",
-      "description": "Unlock a limited-edition skin!",
-      "points": 300,
+      'id': 3,
+      'name': 'Puzzle Set',
+      'description': 'Educational puzzle set for kids aged 6-12',
+      'image': 'assets/images/puzzle.png',
+      'remaining': 7,
+      'claimed': false,
     },
   ];
-
-  late String
-      selectedGift; // Use 'late' to indicate it will be initialized later
-
-  @override
-  void initState() {
-    super.initState();
-    selectedGift = dailyGifts[0]["name"]; // Initialize with the first gift
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Daily Gifts"),
-        centerTitle: true,
-        backgroundColor: Colors.deepPurple,
-        elevation: 0,
+        title: const Text('Daily Gift'),
       ),
-      body: Column(
+      body: _dailyGifts.isEmpty
+          ? const Center(
+              child: Text('No daily gifts available today.'),
+            )
+          : ListView.builder(
+              padding: const EdgeInsets.all(16.0),
+              itemCount: _dailyGifts.length,
+              itemBuilder: (context, index) {
+                final gift = _dailyGifts[index];
+                return DailyGiftCard(
+                  gift: gift,
+                  onClaim: () => _claimGift(index),
+                );
+              },
+            ),
+    );
+  }
+
+  void _claimGift(int index) {
+    final gift = _dailyGifts[index];
+    if (gift['remaining'] > 0 && !gift['claimed']) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Claim Daily Gift'),
+          content: Text('Are you sure you want to claim the ${gift['name']}?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  _dailyGifts[index]['remaining']--;
+                  _dailyGifts[index]['claimed'] = true;
+                });
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('${gift['name']} claimed successfully!'),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+              },
+              child: const Text('Claim'),
+            ),
+          ],
+        ),
+      );
+    } else if (gift['claimed']) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('You have already claimed this gift today.'),
+          backgroundColor: Colors.orange,
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('No more gifts available today.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+}
+
+class DailyGiftCard extends StatelessWidget {
+  final Map<String, dynamic> gift;
+  final VoidCallback onClaim;
+
+  const DailyGiftCard({
+    Key? key,
+    required this.gift,
+    required this.onClaim,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16.0),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header Section
-          Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Colors.deepPurple,
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(30),
-                bottomRight: Radius.circular(30),
+          Stack(
+            children: [
+              Container(
+                height: 200,
+                width: double.infinity,
+                color: Colors.grey[200],
+                child: Center(
+                  child: Image.asset(
+                    gift['image'],
+                    fit: BoxFit.contain,
+                    errorBuilder: (context, error, stackTrace) => const Icon(
+                      Icons.image_not_supported,
+                      size: 64,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
               ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "Claim Your Daily Gift",
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+              Positioned(
+                top: 10,
+                right: 10,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
                   ),
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                  "Check out the amazing gifts waiting for you today!",
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.white70,
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                ),
-                const SizedBox(height: 20),
-                Center(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Add logic to claim a gift
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text("You claimed $selectedGift!"),
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.amber,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 30,
-                        vertical: 15,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                    child: const Text(
-                      "Claim Now",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.deepPurple,
-                      ),
+                  child: Text(
+                    'Remaining: ${gift['remaining']}',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-
-          // Dropdown List Section
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "Select a Gift",
-                  style: TextStyle(
-                    fontSize: 20,
+                Text(
+                  gift['name'],
+                  style: const TextStyle(
+                    fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 10),
-                DropdownButton<String>(
-                  value: selectedGift,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      selectedGift = newValue!; // Update selected gift
-                    });
-                  },
-                  items: dailyGifts.map<DropdownMenuItem<String>>((gift) {
-                    return DropdownMenuItem<String>(
-                      value: gift["name"],
-                      child: Text(gift["name"]),
-                    );
-                  }).toList(),
+                const SizedBox(height: 8),
+                Text(
+                  gift['description'],
+                  style: const TextStyle(fontSize: 14),
                 ),
-                const SizedBox(height: 20),
-                // Display Selected Gift Details
-                Card(
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ClipRRect(
-                        borderRadius: const BorderRadius.vertical(
-                          top: Radius.circular(20),
-                        ),
-                        child: Image.asset(
-                          dailyGifts.firstWhere(
-                              (gift) => gift["name"] == selectedGift)["image"],
-                          height: 120,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              selectedGift,
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Text(
-                              dailyGifts.firstWhere((gift) =>
-                                  gift["name"] == selectedGift)["description"],
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              children: [
-                                const Icon(
-                                  Icons.workspace_premium,
-                                  color: Colors.amber,
-                                  size: 20,
-                                ),
-                                const SizedBox(width: 5),
-                                Text(
-                                  "${dailyGifts.firstWhere((gift) => gift["name"] == selectedGift)["points"]} Points",
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.deepPurple,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                const SizedBox(height: 16),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: gift['remaining'] > 0 && !gift['claimed']
+                        ? onClaim
+                        : null,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: gift['claimed'] ? Colors.grey : null,
+                    ),
+                    child: Text(
+                      gift['claimed']
+                          ? 'Claimed'
+                          : gift['remaining'] > 0
+                              ? 'Claim Gift'
+                              : 'Out of Stock',
+                    ),
                   ),
                 ),
               ],
