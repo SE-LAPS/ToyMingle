@@ -24,6 +24,9 @@ dependencies:
   provider: ^6.1.1 # For state management
   carousel_slider: ^5.0.0 # For carousel slider functionality
   image_picker: ^0.8.7+4 # For image selection functionality
+  uuid: ^3.0.7
+  path_provider: ^2.1.4
+  sqflite: ^2.3.3+1
 
 dev_dependencies:
   flutter_test:
@@ -44,6 +47,9 @@ flutter:
     - assets/images/banner2.jpg
     - assets/images/banner3.jpg
     - assets/images/banner4.jpg
+    - assets/images/logo.png
+    - assets/icons/Swap.svg
+    - assets/icons/Sell.svg
 
   # Fonts configuration
   fonts:
