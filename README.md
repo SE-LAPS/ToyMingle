@@ -28,9 +28,7 @@
 ## Screen Record 🎥
 | SCREEN RECORD|
 |--------------|
-| 
-
-|
+| https://github.com/user-attachments/assets/358d260b-f490-4eef-b2ee-25cb100901a0 |
 
 ---
 
