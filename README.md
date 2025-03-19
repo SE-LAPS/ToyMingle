@@ -17,10 +17,11 @@
    ```
 
 ## Screenshots 📸
-| Feature | Description | Screenshot 1 | Screenshot 2 |
+| SCREEN | SCREEN | SCREEN | SCREEN |
 |---------|------------|-------------|-------------|
-| **Dashboard** | Overview of hotel operations | ![Dashboard](images/dashboard1.png) | ![Dashboard](images/dashboard2.png) |
-| **Booking System** | Manage customer bookings | ![Bookings](images/booking1.png) | ![Bookings](images/booking2.png) |
+| ![1](https://github.c![Uploading 4.png…]()
+om/user-attachments/assets/de538d1c-a59a-42eb-857b-d14a017d059b) | ![2](https://github.com/user-attachments/assets/50df6c70-d557-4a82-97e1-6b00c44f9b69)| ![3](https://github.com/user-attachments/assets/1c415235-a5d5-4e4b-a44d-ddd4c8d1aa28) |  |
+|  | Manage customer bookings | ![Bookings](images/booking1.png) | ![Bookings](images/booking2.png) |
 | **Customer Management** | View and edit customer details | ![Customers](images/customers1.png) | ![Customers](images/customers2.png) |
 | **Staff Management** | Manage hotel staff details | ![Staff](images/staff1.png) | ![Staff](images/staff2.png) |
 | **Reports & Analytics** | Generate reports for insights | ![Reports](images/reports1.png) | ![Reports](images/reports2.png) |
