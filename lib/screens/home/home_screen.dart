@@ -5,6 +5,7 @@ import 'components/discount_banner.dart';
 import 'components/home_header.dart';
 import 'components/popular_product.dart';
 import 'components/special_offers.dart';
+import 'components/top_brands.dart';
 
 class HomeScreen extends StatelessWidget {
   static String routeName = "/home";
@@ -23,6 +24,7 @@ class HomeScreen extends StatelessWidget {
               Categories(),
               SpecialOffers(),
               SizedBox(height: 20),
+              TopBrands(),
               PopularProducts(),
               SizedBox(height: 20),
             ],
