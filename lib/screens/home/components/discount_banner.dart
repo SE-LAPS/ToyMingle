@@ -90,7 +90,7 @@ class _ImageSliderBannerState extends State<ImageSliderBanner> {
       bannerImages.length,
       (index) => Container(
         width: 10,
-        height: 10,
+        height: 15, // Adjust the size
         margin: const EdgeInsets.symmetric(horizontal: 4),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
