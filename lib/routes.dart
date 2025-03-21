@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:shop_app/screens/auth/email_verification_screen.dart';
 import 'package:shop_app/screens/products/products_screen.dart';
 import 'screens/cart/cart_screen.dart';
 import 'screens/complete_profile/complete_profile_screen.dart';
@@ -14,7 +15,7 @@ import 'screens/sign_up/sign_up_screen.dart';
 import 'screens/splash/splash_screen.dart';
 import 'screens/swap/post_swap_screen.dart';
 // Import swap.dart using the 'as' keyword to create a prefix
-import 'screens/swap/swap.dart' as swap_model;
+
 import 'screens/swap/swap_screen.dart';
 import 'screens/sell/sell_screen.dart';
 import 'screens/child_lock/child_lock_screen.dart';
@@ -23,9 +24,12 @@ import 'screens/help_center/help_center_screen.dart';
 import 'screens/flash_deal/flash_deal_screen.dart';
 import 'screens/Game_deal/game_deal_screen.dart';
 import 'screens/daily_gift_deal/daily_gift_screen.dart';
+import 'widgets/auth_wrapper.dart';
+
 
 final Map<String, WidgetBuilder> routes = {
-  InitScreen.routeName: (context) => const InitScreen(),
+AuthWrapper.routeName: (context) => const AuthWrapper(),
+  InitScreen.routeName: (context) => const  InitScreen(),
   SplashScreen.routeName: (context) => const SplashScreen(),
   SignInScreen.routeName: (context) => const SignInScreen(),
   ForgotPasswordScreen.routeName: (context) => const ForgotPasswordScreen(),
@@ -47,4 +51,5 @@ final Map<String, WidgetBuilder> routes = {
   FlashDealScreen.routeName: (context) => FlashDealScreen(),
   GameDealScreen.routeName: (context) => GameDealScreen(),
   DailyGiftScreen.routeName: (context) => const DailyGiftScreen(),
+  EmailVerificationScreen.routeName: (context) => const EmailVerificationScreen(),
 };
