@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import '../../providers/auth_provider.dart';
 import '../help_center/help_center_screen.dart';
 import '../settings/settings_screen.dart';
-import '../splash/splash_screen.dart'; // Added import for SplashScreen
+import '../splash/splash_screen.dart';
 import 'components/profile_menu.dart';
 import 'components/profile_pic.dart';
 
@@ -47,12 +48,17 @@ class ProfileScreen extends StatelessWidget {
                 Navigator.pushNamed(context, HelpCenterScreen.routeName);
               },
             ),
-            ProfileMenu(
-              text: "Log Out",
-              icon: "assets/icons/Log out.svg",
-              press: () {
-                // Show confirmation dialog
-                showLogoutConfirmationDialog(context);
+            Consumer<AuthProvider>(
+              builder: (context, authProvider, child) {
+                return ProfileMenu(
+                  text: authProvider.isLoading ? "Logging out..." : "Log Out",
+                  icon: "assets/icons/Log out.svg",
+                  press: authProvider.isLoading
+                      ? null
+                      : () {
+                          showLogoutConfirmationDialog(context);
+                        },
+                );
               },
             ),
           ],
@@ -78,14 +84,31 @@ class ProfileScreen extends StatelessWidget {
             ),
             TextButton(
               child: const Text("Log Out"),
-              onPressed: () {
+              onPressed: () async {
                 Navigator.of(context).pop(); 
                 
-                // Clear navigation stack and go to splash screen
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  SplashScreen.routeName,
-                  (Route<dynamic> route) => false, 
-                );
+                try {
+                  // Sign out using AuthProvider
+                  await context.read<AuthProvider>().signOut();
+                  
+                  // Clear navigation stack and go to splash screen
+                  if (context.mounted) {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      SplashScreen.routeName,
+                      (Route<dynamic> route) => false, 
+                    );
+                  }
+                } catch (e) {
+                  // Show error if logout fails
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Logout failed: ${e.toString()}"),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                }
               },
             ),
           ],
