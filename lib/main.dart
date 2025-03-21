@@ -1,10 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/screens/splash/splash_screen.dart';
-import 'routes.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/routes.dart';
+import 'package:shop_app/providers/auth_provider.dart';
+import 'screens/splash/splash_screen.dart';
 import 'theme.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'widgets/auth_wrapper.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp( MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+      ],
+      child: const MyApp(),
+      )
+);
 }
 
 class MyApp extends StatelessWidget {
@@ -16,7 +33,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'The ToyMingle - Mobile App',
       theme: AppTheme.lightTheme(context),
-      initialRoute: SplashScreen.routeName,
+      initialRoute: AuthWrapper.routeName,
       routes: routes,
       builder: (context, child) {
         return LogoWrapper(child: child!);
@@ -29,7 +46,7 @@ class LogoWrapper extends StatelessWidget {
   final Widget child;
 
   const LogoWrapper({super.key, required this.child});
-
+  
   @override
   Widget build(BuildContext context) {
     return Stack(
