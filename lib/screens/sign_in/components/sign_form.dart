@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import '../../../providers/auth_provider.dart';
 import '../../../components/custom_surfix_icon.dart';
 import '../../../components/form_error.dart';
 import '../../../constants.dart';
 import '../../../helper/keyboard.dart';
 import '../../forgot_password/forgot_password_screen.dart';
 import '../../login_success/login_success_screen.dart';
+import '../../auth/email_verification_screen.dart';
 
 class SignForm extends StatefulWidget {
   const SignForm({super.key});
@@ -49,7 +51,8 @@ class _SignFormState extends State<SignForm> {
             onChanged: (value) {
               if (value.isNotEmpty) {
                 removeError(error: kEmailNullError);
-              } else if (emailValidatorRegExp.hasMatch(value)) {
+              }
+              if (emailValidatorRegExp.hasMatch(value)) {
                 removeError(error: kInvalidEmailError);
               }
               return;
@@ -67,8 +70,6 @@ class _SignFormState extends State<SignForm> {
             decoration: const InputDecoration(
               labelText: "Email",
               hintText: "Enter Your Email",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
             ),
@@ -80,7 +81,8 @@ class _SignFormState extends State<SignForm> {
             onChanged: (value) {
               if (value.isNotEmpty) {
                 removeError(error: kPassNullError);
-              } else if (value.length >= 8) {
+              }
+              if (value.length >= 8) {
                 removeError(error: kShortPassError);
               }
               return;
@@ -98,8 +100,6 @@ class _SignFormState extends State<SignForm> {
             decoration: const InputDecoration(
               labelText: "Password",
               hintText: "Enter Your Password",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
             ),
@@ -130,16 +130,45 @@ class _SignFormState extends State<SignForm> {
           ),
           FormError(errors: errors),
           const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                _formKey.currentState!.save();
-                // if all are valid then go to success screen
-                KeyboardUtil.hideKeyboard(context);
-                Navigator.pushNamed(context, LoginSuccessScreen.routeName);
+          Consumer<AuthProvider>(
+            builder: (context, authProvider, child) {
+              if (authProvider.isLoading) {
+                return const CircularProgressIndicator();
               }
+              return ElevatedButton(
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    _formKey.currentState!.save();
+                    KeyboardUtil.hideKeyboard(context);
+                    
+                    try {
+                      
+                      await context.read<AuthProvider>().signIn(
+                        email!,
+                        password!,
+                      );
+                      
+                      
+                      
+                    } catch (e) {
+                      // Handle authentication errors
+                      String errorMessage = e.toString();
+                      if (errorMessage.contains('user-not-found')) {
+                        addError(error: "No user found for that email.");
+                      } else if (errorMessage.contains('wrong-password')) {
+                        addError(error: "Wrong password provided.");
+                      } else if (errorMessage.contains('verify your email')) {
+                        Navigator.pushNamed(context, EmailVerificationScreen.routeName);
+                        // addError(error: "Please verify your email before signing in.");
+                      } else {
+                        addError(error: errorMessage);
+                      }
+                    }
+                  }
+                },
+                child: const Text("Continue"),
+              );
             },
-            child: const Text("Continue"),
           ),
         ],
       ),
