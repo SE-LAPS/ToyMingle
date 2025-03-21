@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "760336803621",
+    "project_id": "toymingle",
+    "storage_bucket": "toymingle.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:760336803621:android:d684414f3c06bc1e8edccc",
+        "android_client_info": {
+          "package_name": "com.toymingle.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxhXRO9BxMOaLMn8O-slJnOX3fUCtb13Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
