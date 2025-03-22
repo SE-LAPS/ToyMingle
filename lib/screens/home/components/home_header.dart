@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/providers/cart_provider.dart';
+import 'package:shop_app/screens/cart/cart_screen.dart';
 import 'package:shop_app/screens/swap/swap.dart';
 import 'icon_btn_with_counter.dart';
 import 'search_field.dart';
@@ -94,17 +97,18 @@ class HomeHeader extends StatelessWidget {
             builder: (context) => IconBtnWithCounter(
               svgSrc: "assets/icons/Plus Icon.svg",
               press: () {
-                final RenderBox button =
-                    context.findRenderObject() as RenderBox;
+                final RenderBox button = context.findRenderObject() as RenderBox;
                 _showDropdownMenu(context, button);
               },
             ),
           ),
           const SizedBox(width: 8),
-          IconBtnWithCounter(
-            svgSrc: "assets/icons/Bell.svg",
-            numOfitem: 3,
-            press: () {},
+          Consumer<CartProvider>(
+            builder: (context, cartProvider, child) => IconBtnWithCounter(
+              svgSrc: "assets/icons/Cart Icon.svg",
+              numOfitem: cartProvider.itemCount,
+              press: () => Navigator.pushNamed(context, CartScreen.routeName),
+            ),
           ),
         ],
       ),
