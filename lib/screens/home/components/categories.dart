@@ -18,8 +18,8 @@ class Categories extends StatelessWidget {
       {"icon": "assets/icons/Flash Icon.svg", "text": "Flash Deal"},     
       {"icon": "assets/icons/Game Icon.svg", "text": "Game"},
       {"icon": "assets/icons/Gift Icon.svg", "text": "Daily Gift"},
-      {"icon": "assets/icons/Settings.svg", "text": "Swap"},
-      {"icon": "assets/icons/Cart Icon.svg", "text": "Sell"},
+      {"icon": "assets/icons/Settings.svg", "text": "Feed"},
+      {"icon": "assets/icons/Bell.svg", "text": "Activity"},
       {"icon": "assets/icons/Lock.svg", "text": "Lock"},
     ];
     return Padding(
@@ -39,9 +39,9 @@ class Categories extends StatelessWidget {
                 Navigator.pushNamed(context, GameDealScreen.routeName);
               } else if (categories[index]["text"] == "Daily Gift") {
                 Navigator.pushNamed(context, DailyGiftScreen.routeName);
-              } else if (categories[index]["text"] == "Swap") {
+              } else if (categories[index]["text"] == "Feed") {
                 Navigator.pushNamed(context, SwapScreen.routeName);
-              } else if (categories[index]["text"] == "Sell") {
+              } else if (categories[index]["text"] == "Activity") {
                 Navigator.pushNamed(context, SellScreen.routeName);
               } else if (categories[index]["text"] == "Lock") {
                 Navigator.pushNamed(context, ChildLockScreen.routeName);
