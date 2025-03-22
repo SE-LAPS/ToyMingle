@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/providers/cart_provider.dart';
 import 'package:shop_app/routes.dart';
 import 'package:shop_app/providers/auth_provider.dart';
-import 'screens/splash/splash_screen.dart';
 import 'theme.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -18,6 +18,7 @@ void main() async {
   runApp( MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => CartProvider()),
       ],
       child: const MyApp(),
       )
