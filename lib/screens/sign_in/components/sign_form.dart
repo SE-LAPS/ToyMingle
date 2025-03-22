@@ -147,6 +147,8 @@ class _SignFormState extends State<SignForm> {
                         email!,
                         password!,
                       );
+
+                      Navigator.pushNamed(context, LoginSuccessScreen.routeName);
                       
                       
                       
