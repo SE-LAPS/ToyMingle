@@ -14,22 +14,20 @@ import 'screens/sign_in/sign_in_screen.dart';
 import 'screens/sign_up/sign_up_screen.dart';
 import 'screens/splash/splash_screen.dart';
 import 'screens/swap/post_swap_screen.dart';
-// Import swap.dart using the 'as' keyword to create a prefix
-
 import 'screens/swap/swap_screen.dart';
 import 'screens/sell/sell_screen.dart';
 import 'screens/child_lock/child_lock_screen.dart';
 import 'screens/settings/settings_screen.dart';
 import 'screens/help_center/help_center_screen.dart';
 import 'screens/flash_deal/flash_deal_screen.dart';
-import 'screens/Game_deal/game_deal_screen.dart';
+import 'screens/game_deal/game_deal_screen.dart';
 import 'screens/daily_gift_deal/daily_gift_screen.dart';
 import 'widgets/auth_wrapper.dart';
 
-
+// Define all routes in one place
 final Map<String, WidgetBuilder> routes = {
-AuthWrapper.routeName: (context) => const AuthWrapper(),
-  InitScreen.routeName: (context) => const  InitScreen(),
+  AuthWrapper.routeName: (context) => const AuthWrapper(),
+  InitScreen.routeName: (context) => const InitScreen(),
   SplashScreen.routeName: (context) => const SplashScreen(),
   SignInScreen.routeName: (context) => const SignInScreen(),
   ForgotPasswordScreen.routeName: (context) => const ForgotPasswordScreen(),
@@ -43,7 +41,7 @@ AuthWrapper.routeName: (context) => const AuthWrapper(),
   CartScreen.routeName: (context) => const CartScreen(),
   ProfileScreen.routeName: (context) => const ProfileScreen(),
   SwapScreen.routeName: (context) => const SwapScreen(),
-  '/swap/post': (context) => const PostSwapScreen(),
+  PostSwapScreen.routeName: (context) => const PostSwapScreen(),
   SellScreen.routeName: (context) => const SellScreen(),
   ChildLockScreen.routeName: (context) => const ChildLockScreen(),
   SettingsScreen.routeName: (context) => const SettingsScreen(),
